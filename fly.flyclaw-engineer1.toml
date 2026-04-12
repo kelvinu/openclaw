@@ -1,0 +1,33 @@
+app = "flyclaw-engineer1"  # Your app name
+primary_region = "nrt"
+
+[build]
+  dockerfile = "Dockerfile"
+
+[env]
+  NODE_ENV = "production"
+  OPENCLAW_PREFER_PNPM = "1"
+  OPENCLAW_STATE_DIR = "/data"
+  NODE_OPTIONS = "--max-old-space-size=1536"
+
+[processes]
+#app = "sleep 1000000"
+#app = "node dist/index.js gateway --allow-unconfigured --port 3000 --bind lan run"
+#app = "node dist/index.js gateway --allow-unconfigured --port 3000 --bind 0.0.0.0 run"
+#app = "node dist/index.js gateway --allow-unconfigured --port 3000 --bind auto run"
+#app = "sh -lc 'node /data/ipv6-forward.js >/tmp/v6-forward.log 2>&1 & exec node dist/index.js gateway --allow-unconfigured --port 3000 --bind lan run'"
+app = "/data/start.sh"
+
+[[services]]
+  internal_port = 3000
+  protocol = "tcp"
+  processes = ["app"]
+
+[[vm]]
+  size = "shared-cpu-2x"
+  memory = "2048mb"
+
+[mounts]
+  source = "openclaw_data"
+  destination = "/data"
+  processes = ["app"]

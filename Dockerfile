@@ -44,6 +44,11 @@ RUN pnpm ui:build
 
 ENV NODE_ENV=production
 
+RUN apt-get update && apt-get install -y --no-install-recommends \
+chromium ca-certificates fonts-liberation \
+&& rm -rf /var/lib/apt/lists/*
+
+
 # Allow non-root user to write temp files during runtime/tests.
 RUN chown -R node:node /app
 
